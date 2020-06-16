@@ -87,6 +87,12 @@
 		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/main.c">
 			<Option target="Projet"/>
 		</Unit>
+		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/seven-seg.c">
+			<Option target="Projet"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/seven-seg.h">
+			<Option target="Projet"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

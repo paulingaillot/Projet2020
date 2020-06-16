@@ -177,6 +177,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/main.c.s
 .PHONY : main.c.s
 
+seven-seg.o: seven-seg.c.o
+
+.PHONY : seven-seg.o
+
+# target to build an object file
+seven-seg.c.o:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/seven-seg.c.o
+.PHONY : seven-seg.c.o
+
+seven-seg.i: seven-seg.c.i
+
+.PHONY : seven-seg.i
+
+# target to preprocess a source file
+seven-seg.c.i:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/seven-seg.c.i
+.PHONY : seven-seg.c.i
+
+seven-seg.s: seven-seg.c.s
+
+.PHONY : seven-seg.s
+
+# target to generate assembly for a file
+seven-seg.c.s:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/seven-seg.c.s
+.PHONY : seven-seg.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... seven-seg.o"
+	@echo "... seven-seg.i"
+	@echo "... seven-seg.s"
 .PHONY : help
 
 
