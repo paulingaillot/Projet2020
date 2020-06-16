@@ -27,7 +27,7 @@ void physical_Display(char symbol) {
     } else
         segword = 0b01000000;
 #ifdef PIC_VERSION
-    PORTD = segword;
+    PORTD = segword;;
 #endif
 }
 

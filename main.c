@@ -70,43 +70,45 @@ void addSentence(char* stc) {
 
     int o=0;
     char lastval = ' ';
-    for(int i=0; i< strlen(stc); i++) {
-        UART_Write_Text("test 1");
-        char val11 = stc[i];
+    char valeur = ' ';
+    for(int i=0; i< 20; i++) {
+        valeur = stc[i];
         int val1 = 0;
         int val2=0;
 
         // Valeur a enregistrer
-        if(val11 >=65 && val11 <=90) {
-            val1 = tab1[val11-65];
-            val2 = tab2[val11-65];
+        if(valeur >=65 && valeur <=90) {
+            val1 = tab1[valeur-65];
+            val2 = tab2[valeur-65];
+            UART_Write_Text(start);
+            eeprom_write(start+o, val1);
+
+            eeprom_write(start+o+1, val2);
+            o=o+2;
+        }
+        if(valeur >=48 && valeur <=57)  {
+            val1 = tab1[26+valeur-48];
+            val2 = tab2[26+valeur-48];
             eeprom_write(start+o, val1);
             eeprom_write(start+o+1, val2);
             o=o+2;
         }
-        if(val11 >=48 && val11 <=57)  {
-            val1 = tab1[26+val11-48];
-            val2 = tab2[26+val11-48];
-            eeprom_write(start+o, val1);
-            eeprom_write(start+o+1, val2);
-            o=o+2;
-        }
-        if(val11 == 32 && lastval != 32) {
+        if(valeurb == 32 && lastval != 32) {
             eeprom_write(start+o, 0);
             eeprom_write(start+o+1, 0);
             o=o+2;
         }
-        lastval= val11;
+        lastval= valeur;
 
 
 
 
 
     }
-    UART_Write_Text("Votre phrase a bien été ajouté"git );
+    UART_Write_Text("Votre phrase a bien été ajouté");
 #endif
 #ifndef PIC_VERSION
-    UART_Write("Impossible");
+    UART_Write(stc[0]);
 #endif
 
 }
@@ -117,9 +119,9 @@ void letter(int *tab, int size){
         if(tab[i]==0){
 #ifdef PIC_VERSION
             __delay_ms(1000); // 1 second delay
-            RD0 = 1; // LED ON
+            RC0 = 1; // LED ON
             __delay_ms(500); // 0.5 second delay
-            RD0 = 0; // LED OFF
+            RC0 = 0; // LED OFF
 #endif
 #ifndef PIC_VERSION
             printf(". ");
@@ -128,9 +130,9 @@ void letter(int *tab, int size){
         } else{
 #ifdef PIC_VERSION
             __delay_ms(1000); // 1 second delay
-            RD0 = 1; // LED ON
+            RC0 = 1; // LED ON
             __delay_ms(1500); // 1.5 second delay
-            RD0 = 0; // LED OFF
+            RC0 = 0; // LED OFF
 #endif
 #ifndef PIC_VERSION
             printf("- ");
@@ -148,9 +150,15 @@ void convert(int length, int value) {
     for (i = 8; i > (8-length); i--) {
         tabBits[i] = ((value & mask) != 0);
         mask <<= 1;
-        printf("tabBits[%d]=%d\t", i, tabBits[i]);
+        UART_Write_Text(tabBits[i]);
     }
-    letter(tabBits, length);
+
+    int tabBits2[8];
+    for(int i=0; i<8; i++){
+        tabBits2[i] = tabBits2[8-i];
+    }
+
+    letter(tabBits2, length);
 }
 
 char getLetter(int val) {
@@ -171,7 +179,24 @@ char getLetter(int val) {
 
 void listsentence() {
 #ifdef PIC_VERSION
-    for(int i=6; i<=23; i=i+2) {
+
+    for(int i=24; i<35; i++) {
+
+        int val = eeprom_read(24+i);
+        int length = eeprom_read(24+i+1);
+
+            convert(length, val);
+
+           UART_Write_Text("Playing the sequence on the physical display\n");
+           display_7SEG(getLetter(val), LED_ONLY);
+            UART_Write_Text("Playing the sequence on display & UART\n");
+            display_7SEG(getLetter(val), UART_LED);
+            display_7SEG(getLetter(val), UART_LED);
+
+    }
+
+    /*int phrase = eeprom_read(1);
+    for(int i=6; i<=(6+(phrase-1)*2+1); i=i+2) {
         int start = eeprom_read(i);
         for(int j =start; j<=(start+2*eeprom_read(i+1)); j=j+2) {
             int val = eeprom_read(24+start);
@@ -185,10 +210,10 @@ void listsentence() {
            display_7SEG(letter, LED_ONLY);
             UART_Write_Text("Playing the sequence on display & UART\n");
             display_7SEG(letter, UART_LED);
-
+            __delay_ms(1000);
         }
 
-    }
+    }*/
 #endif
 }
 
@@ -198,6 +223,7 @@ int main() {
     #ifdef PIC_VERSION
       OPTION_REG = (OPTION_REG & 0b01111111); // Activating pull-up on PORTB pins
       TRISB0 = 1;
+      TRISC0 = 0;
       TRISD = 0x0;
       PORTD = 0x0;
     #endif
@@ -211,7 +237,9 @@ int main() {
         eeprom_write(5, 0);
     #endif
 
+
     UART_Init();
+
     UART_Write_Text("----- Menu -----\n"
                     "1- add a sentence\n"
                     "2- delete a sentence\n"
@@ -238,8 +266,12 @@ int main() {
         addSentence(echo2);
 
     }
-    if(echo[0] == '2') ;
-    if(echo[0] == '3') ;
+    if(echo[0] == '2')  {
+
+    }
+    if(echo[0] == '3')  {
+        listsentence();
+    }
     if(echo[0] == '4')  {
         displayfree();
     }
