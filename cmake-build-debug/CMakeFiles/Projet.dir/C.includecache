@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.h
+version.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/version.h
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/main.c
+stdio.h
+-
+UART.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.h
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/version.h
+
