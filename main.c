@@ -44,66 +44,61 @@ void setNextDefault() {
 #endif
 }
 
-int* tab1= {2, 4, 4, 3, 1, 4, 3, 4, 2, 4, 3, 4, 2, 2, 3, 4, 4, 3,
+int tab1[26]= {2, 4, 4, 3, 1, 4, 3, 4, 2, 4, 3, 4, 2, 2, 3, 4, 4, 3,
             3, 1, 3, 4, 3, 4, 4, 4,
-            5, 5, 5, 5, 5, 5, 5, 5, 5, 5
 };
 
-int* tab2= {0b00000010, 0b00000001,	0b00000101,	0b00000001,	0b00000000,	0b00000100,	0b00000011,	0b00000000,	0b00000000,	0b00001110,	0b00000101,	0b00000010,	0b00000011,	0b00000001,
+int tab2[36]= {0b00000010, 0b00000001,	0b00000101,	0b00000001,	0b00000000,	0b00000100,	0b00000011,	0b00000000,	0b00000000,	0b00001110,	0b00000101,	0b00000010,	0b00000011,	0b00000001,
             0b00000111,	0b00000110,	0b00001011,	0b00000010,0b00000000,	0b00000001,	0b00000100,	0b00001000,	0b00000110,	0b00001001,	0b00001101,	0b00000011,
             0b00011111,	0b00011110,	0b00011100,	0b00011000,	0b00010000,	0b00000000,	0b00000001,	0b00000011,	0b00000111,	0b00001111
 };
 
 void addSentence(char* stc) {
 #ifdef PIC_VERSION
-    int j=0;
-    int start =24;
-    int test= 1;
 
+    int start = 24;
     int phrase = eeprom_read(1);
+    if(phrase == 0) {
+        eeprom_write(6, start);
+        eeprom_write(7, strlen(stc));
+    }
+    else {
+        int lStart = eeprom_read(6+2*(phrase-1));
+        int llength = eeprom_read(7+2*(phrase-1));
+        start = lStart + llength+ 1;
+        eeprom_write(lStart+2, start);
+        eeprom_write(llength+2, strlen(stc));
+    }
 
-    if(phrase != 0) start = eeprom_read(6+2*(phrase-1))+eeprom_read(7+2*(phrase-1))+1;
-    else start = 24;
-
-    eeprom_write(j+6, start);
-    eeprom_write(j+7, strlen(stc));
-
+    char lastVal = ' ';
     int o=0;
-    char lastval = ' ';
-    char valeur = ' ';
-    for(int i=0; i< 20; i++) {
-        valeur = stc[i];
-        int val1 = 0;
-        int val2=0;
+    for(int i=0; i< strlen(stc); i++) {
 
-        // Valeur a enregistrer
-        if(valeur >=65 && valeur <=90) {
-            val1 = tab1[valeur-65];
-            val2 = tab2[valeur-65];
-            UART_Write_Text(start);
+        char value = stc[i];
+
+         if(value >=65 && value <=90) {
+            int val1 = tab1[value-65];
+            int val2 = tab2[value-65];
+
             eeprom_write(start+o, val1);
 
             eeprom_write(start+o+1, val2);
             o=o+2;
         }
-        if(valeur >=48 && valeur <=57)  {
-            val1 = tab1[26+valeur-48];
-            val2 = tab2[26+valeur-48];
+        else if(value >=48 && value <=57)  {
+            int val1 = 5;
+            int val2 = tab2[26+value-48];
             eeprom_write(start+o, val1);
             eeprom_write(start+o+1, val2);
             o=o+2;
         }
-        if(valeurb == 32 && lastval != 32) {
+        else if(value == 32 && lastVal != 32) {
             eeprom_write(start+o, 0);
             eeprom_write(start+o+1, 0);
             o=o+2;
         }
-        lastval= valeur;
 
-
-
-
-
+        lastVal= value;
     }
     UART_Write_Text("Votre phrase a bien été ajouté");
 #endif
@@ -165,7 +160,7 @@ char getLetter(int val) {
 
     char res ;
     for(int i=0; i<=36; i++){
-        int val1 = tab1[i];
+        int val1 = 5;
         if(val == val1) {
             if(i<26){
                res = (char)(i+65);
@@ -230,7 +225,7 @@ int main() {
 
     #ifdef PIC_VERSION
         eeprom_write(0, 1);
-        eeprom_write(1, 1);
+        eeprom_write(1, 0);
         eeprom_write(2, 232);
         eeprom_write(3, 0);
         eeprom_write(4, 0);
