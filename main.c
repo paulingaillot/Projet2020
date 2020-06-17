@@ -58,9 +58,29 @@ void addSentence(char* stc) {
 
     int start = 24;
     int phrase = eeprom_read(1);
+
+    if(phrase == 9) {
+        UART_Write_Text("Add error: could not save new phrase");
+        return;
+    }
+    if(strlen(stc) > eeprom_read(2)) {
+        UART_Write_Text("Add error: could not save new phrase");
+        return;
+    }
+    if(strlen(stc) < 1){
+        UART_Write_Text("Can’t store Empty String");
+    }
+
+    UART_Write_Text("Adding phrase : ");
+    UART_Write_Text(stc);
+    UART_Write_Text("in position ");
+    UART_Write_Text(phrase+1);
+    UART_Write_Text("\n");
+
     if(phrase == 0) {
         eeprom_write(6, start);
         eeprom_write(7, strlen(stc));
+        UART_Write_Text("No definition in EEPROM");
     }
     else {
         int lStart = eeprom_read(6+2*(phrase-1));
@@ -100,7 +120,11 @@ void addSentence(char* stc) {
 
         lastVal= value;
     }
-    UART_Write_Text("Votre phrase a bien été ajouté");
+    eeprom_write(1, eeprom_read(1)+1);
+    eeprom_write(2, eeprom_read(2)-strlen(stc));
+
+    UART_Write_Text("New phrase saved");
+
 #endif
 #ifndef PIC_VERSION
     UART_Write(stc[0]);
@@ -244,7 +268,7 @@ int main() {
                     "6- set the default setence\n" // Done
                     "7- set next setence as default\n" //Done
                     "8- play all the sentences\n"
-                    "type a number.");
+                    "type a number.\n");
 
     char echo[MAXLENGTH];
 
@@ -253,7 +277,7 @@ int main() {
     UART_Write(echo);
     if(echo[0] == '1')  {
 
-        UART_Write_Text("Veuillez taper la phrase a ajouter");
+        UART_Write_Text("« Please input a new phrase:\n");
 
         char echo2[MAXLENGTH];
         UART_Read_Text(echo2, MAXLENGTH);
