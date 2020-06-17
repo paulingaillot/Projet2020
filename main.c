@@ -99,6 +99,10 @@ void addSentence(char* stc) {
 
         char value = stc[i];
 
+        if(value>=97 && value <=122) {
+            value = value - 32;
+        }
+
          if(value >=65 && value <=90) {
             int val1 = tab2[value-65];
             int val2 = tab1[value-65];
@@ -181,12 +185,17 @@ void convert(int length, int value) {
     letter(tabBits2, length);
 }
 
-char getLetter(int val) {
+char getLetter(int val, int length) {
 
-    char res ;
+    char res = 'A';
     for(int i=0; i<=36; i++){
-        int val1 = tab1[i];
-        if(val == val1) {
+        int val1 = tab2[i];
+
+        int length1 = 5;
+        if(i<=25)  length1 = tab1[i];
+        else length1 = 5;
+
+        if(val == val1 && length1 == length) {
             if(i<26){
                res = (char)(i+65);
             }else res = (char)((i-26)+48);
@@ -215,11 +224,11 @@ void playAll() {
 
             int val = eeprom_read(j);
             int length2 = eeprom_read(j+1);
-            char let = getLetter(val);
+            char let = getLetter(val, length2);
 
 
             convert(length2, val);
-            display_7SEG(let, UART_LED);
+            //display_7SEG(let, UART_LED);
 
         }
 
@@ -238,10 +247,10 @@ void listsentence() {
             convert(length, val);
 
            UART_Write_Text("Playing the sequence on the physical display\n");
-           display_7SEG(getLetter(val), LED_ONLY);
+           display_7SEG(getLetter(val, length), LED_ONLY);
             UART_Write_Text("Playing the sequence on display & UART\n");
-            display_7SEG(getLetter(val), UART_LED);
-            display_7SEG(getLetter(val), UART_LED);
+            display_7SEG(getLetter(val, length), UART_LED);
+            display_7SEG(getLetter(val, length), UART_LED);
 
     }
 
@@ -254,7 +263,7 @@ void listsentence() {
 
             convert(length, val);
 
-            char letter = getLetter(val);
+            char letter = getLetter(val, lenth);
 
             UART_Write_Text("Playing the sequence on the physical display\n");
            display_7SEG(letter, LED_ONLY);
@@ -315,6 +324,7 @@ int main() {
 
         char echo2[MAXLENGTH];
         UART_Read_Text(echo2, MAXLENGTH);
+
 
         addSentence(echo2);
 
