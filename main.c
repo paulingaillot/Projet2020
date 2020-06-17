@@ -74,8 +74,11 @@ void addSentence(char* stc) {
     UART_Write_Text("Adding phrase : ");
     UART_Write_Text(stc);
     UART_Write_Text("in position ");
-    UART_Write_Text(phrase+1);
+    UART_Write_Text(phrase);
     UART_Write_Text("\n");
+
+    eeprom_write(1, (phrase+1));
+    eeprom_write(2, eeprom_read(2)-strlen(stc));
 
     if(phrase == 0) {
         eeprom_write(6, start);
@@ -97,8 +100,8 @@ void addSentence(char* stc) {
         char value = stc[i];
 
          if(value >=65 && value <=90) {
-            int val1 = tab1[value-65];
-            int val2 = tab2[value-65];
+            int val1 = tab2[value-65];
+            int val2 = tab1[value-65];
 
             eeprom_write(start+o, val1);
 
@@ -106,8 +109,8 @@ void addSentence(char* stc) {
             o=o+2;
         }
         else if(value >=48 && value <=57)  {
-            int val1 = 5;
-            int val2 = tab2[26+value-48];
+            int val1 = tab2[26+value-48];
+            int val2 = 5;
             eeprom_write(start+o, val1);
             eeprom_write(start+o+1, val2);
             o=o+2;
@@ -120,8 +123,6 @@ void addSentence(char* stc) {
 
         lastVal= value;
     }
-    eeprom_write(1, eeprom_read(1)+1);
-    eeprom_write(2, eeprom_read(2)-strlen(stc));
 
     UART_Write_Text("New phrase saved");
 
@@ -184,7 +185,7 @@ char getLetter(int val) {
 
     char res ;
     for(int i=0; i<=36; i++){
-        int val1 = 5;
+        int val1 = tab1[i];
         if(val == val1) {
             if(i<26){
                res = (char)(i+65);
@@ -194,6 +195,36 @@ char getLetter(int val) {
         }
     }
 
+}
+
+void playAll() {
+#ifdef PIC_VERSION
+    int phrase = eeprom_read(1);
+
+    if(phrase == 0) {
+        UART_Write_Text("Il n'y a aucune phrase enregistrer");
+        return;
+    }
+
+    for(int i=0; i<phrase; i++){
+
+        int start = eeprom_read(6+i*2);
+        int length = eeprom_read(7+i*2);
+
+        for(int j=start; j<(start+length*2); j=j+2){
+
+            int val = eeprom_read(j);
+            int length2 = eeprom_read(j+1);
+            char let = getLetter(val);
+
+
+            convert(length2, val);
+            display_7SEG(let, UART_LED);
+
+        }
+
+    }
+#endif
 }
 
 void listsentence() {
@@ -248,16 +279,19 @@ int main() {
     #endif
 
     #ifdef PIC_VERSION
+      if(eeprom_read(0) != 1) {
         eeprom_write(0, 1);
         eeprom_write(1, 0);
         eeprom_write(2, 232);
         eeprom_write(3, 0);
         eeprom_write(4, 0);
         eeprom_write(5, 0);
+        }
     #endif
 
 
     UART_Init();
+
 
     UART_Write_Text("----- Menu -----\n"
                     "1- add a sentence\n"
@@ -308,7 +342,7 @@ int main() {
     }
     if(echo[0] == '8') {
 
-
+        playAll();
 
     }
 
