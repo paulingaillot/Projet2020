@@ -5,26 +5,28 @@
 #include <stdlib.h>
 #include "menu.h"
 #include <string.h>
-#include <xc.h>
 #include "UART.h"
-#include "pragma.h"
 #include "seven-seg.h"
 #define MAXLENGTH 20
+
+#ifndef PIC_VERION
+#include "Fake_EEPROM.h"
+#endif
+
+#ifdef PIC_VERSION
+#include "pragma.h"
+#include <xc.h>  // Needed by the MicroChip compiler
 #define _XTAL_FREQ 20000000 // Define the MCU Frequency ; needed by the MicroChip compiler
+#endif
 
 void displayfree() {
 
-#ifdef PIC_VERSION
     int value = eeprom_read(2);
     if(value != 0) {
         UART_Write_Text("Nombre de valeurs libres : ");
         UART_Write_Text(value);
     }
     else UART_Write_Text("Il n'y a plus d'espace disponible");
-#endif
-#ifndef PIC_VERSION
-    printf("Desolé je ne peux pas afficher cela");
-#endif
 
 }
 
@@ -156,8 +158,9 @@ void addSentence(char* stc) {
 
 void letter(int *tab, int size){
     for (int i = 0; i < size; ++i) {
+        UART_Write((char)(tab[i]+48));
         if(tab[i]==0){
-#ifdef PIC_VERSION
+#ifdef PIC_VERSION$
             __delay_ms(1000); // 1 second delay
             RC0 = 1; // LED ON
             __delay_ms(500); // 0.5 second delay
@@ -231,7 +234,11 @@ void playAll() {
         return;
     }
 
+
     for(int i=0; i<phrase; i++){
+
+         UART_Write_Text("Phrase #");
+         UART_Write((char)((i+1)+48);
 
         int start = eeprom_read(6+i*2);
         int length = eeprom_read(7+i*2);
@@ -242,8 +249,13 @@ void playAll() {
             int length2 = eeprom_read(j+1);
             char let = getLetter(val, length2);
 
+             UART_Write('(');
+             UART_Write(let);
+             UART_Write(')');
+
             display_7SEG(let, UART_LED);
             convert(length2, val);
+            UART_Write('.');
 
         }
 

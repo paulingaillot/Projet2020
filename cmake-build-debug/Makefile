@@ -123,6 +123,33 @@ Projet/fast:
 	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/build
 .PHONY : Projet/fast
 
+Fake_EEPROM.o: Fake_EEPROM.c.o
+
+.PHONY : Fake_EEPROM.o
+
+# target to build an object file
+Fake_EEPROM.c.o:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/Fake_EEPROM.c.o
+.PHONY : Fake_EEPROM.c.o
+
+Fake_EEPROM.i: Fake_EEPROM.c.i
+
+.PHONY : Fake_EEPROM.i
+
+# target to preprocess a source file
+Fake_EEPROM.c.i:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/Fake_EEPROM.c.i
+.PHONY : Fake_EEPROM.c.i
+
+Fake_EEPROM.s: Fake_EEPROM.c.s
+
+.PHONY : Fake_EEPROM.s
+
+# target to generate assembly for a file
+Fake_EEPROM.c.s:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/Fake_EEPROM.c.s
+.PHONY : Fake_EEPROM.c.s
+
 UART.o: UART.c.o
 
 .PHONY : UART.o
@@ -240,6 +267,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... Projet"
 	@echo "... edit_cache"
+	@echo "... Fake_EEPROM.o"
+	@echo "... Fake_EEPROM.i"
+	@echo "... Fake_EEPROM.s"
 	@echo "... UART.o"
 	@echo "... UART.i"
 	@echo "... UART.s"

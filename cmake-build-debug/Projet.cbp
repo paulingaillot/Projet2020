@@ -78,6 +78,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/Fake_EEPROM.c">
+			<Option target="Projet"/>
+		</Unit>
+		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/Fake_EEPROM.h">
+			<Option target="Projet"/>
+		</Unit>
 		<Unit filename="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.c">
 			<Option target="Projet"/>
 		</Unit>
