@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Projet.dir/main.c.o"
   "CMakeFiles/Projet.dir/UART.c.o"
   "CMakeFiles/Projet.dir/seven-seg.c.o"
+  "CMakeFiles/Projet.dir/menu.c.o"
   "Projet.pdb"
   "Projet"
 )

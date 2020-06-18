@@ -3,4 +3,4 @@ project(Projet C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Projet main.c UART.c seven-seg.c)
+add_executable(Projet main.c UART.c seven-seg.c menu.c menu.h)

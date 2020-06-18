@@ -177,6 +177,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/main.c.s
 .PHONY : main.c.s
 
+menu.o: menu.c.o
+
+.PHONY : menu.o
+
+# target to build an object file
+menu.c.o:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/menu.c.o
+.PHONY : menu.c.o
+
+menu.i: menu.c.i
+
+.PHONY : menu.i
+
+# target to preprocess a source file
+menu.c.i:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/menu.c.i
+.PHONY : menu.c.i
+
+menu.s: menu.c.s
+
+.PHONY : menu.s
+
+# target to generate assembly for a file
+menu.c.s:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/menu.c.s
+.PHONY : menu.c.s
+
 seven-seg.o: seven-seg.c.o
 
 .PHONY : seven-seg.o
@@ -219,6 +246,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... menu.o"
+	@echo "... menu.i"
+	@echo "... menu.s"
 	@echo "... seven-seg.o"
 	@echo "... seven-seg.i"
 	@echo "... seven-seg.s"

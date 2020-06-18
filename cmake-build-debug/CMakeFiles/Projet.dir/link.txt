@@ -1,1 +1,1 @@
-/usr/bin/cc -g   CMakeFiles/Projet.dir/main.c.o CMakeFiles/Projet.dir/UART.c.o CMakeFiles/Projet.dir/seven-seg.c.o  -o Projet 
+/usr/bin/cc -g   CMakeFiles/Projet.dir/main.c.o CMakeFiles/Projet.dir/UART.c.o CMakeFiles/Projet.dir/seven-seg.c.o CMakeFiles/Projet.dir/menu.c.o  -o Projet 
