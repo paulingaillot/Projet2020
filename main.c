@@ -3,7 +3,7 @@
 #include "UART.h"
 #include "function.h"
 #include "version.h"
-#define MAXLENGTH 10
+#define MAXLENGTH 20
 
 
 #ifdef PIC_VERSION
@@ -36,16 +36,12 @@ int main() {
     UART_Init();
 
     while(1){
-        UART_Write_Text("----- Menu -----\n"
-                        "1- add a sentence\n"
-                        "2- delete a sentence\n"
-                        "3- list sentences\n"
-                        "4- display amount of free sells\n" // Done
-                        "5- blink default sentences\n"
-                        "6- set the default setence\n" // Done
-                        "7- set next setence as default\n" //Done
-                        "8- play all the sentences\n"
-                        "type a number.\n");
+
+        #ifdef PIC_VERSION
+           PORTD = 0x0;
+        #endif
+
+           UART_Write_Text("\nEnter a command\n");
 
         char echo[MAXLENGTH];
 
@@ -53,7 +49,7 @@ int main() {
 
         switch(echo[0]) {
 
-            case '1': {
+            case 'a': {
 
                 UART_Write_Text(" Please input a new phrase:\n");
 
@@ -65,9 +61,10 @@ int main() {
                 break;
 
             }
-            case '2': {
+            case 'd': {
 
-                UART_Write_Text("« Please input the number of the sentence to delete:\n");
+                if(eeprom_read(1) !=0) UART_Write_Text("Entry to delete: \n");
+                else UART_Write_Text("deleteError : No phrase stored ");
 
                 char val[MAXLENGTH];
                 UART_Read_Text(val, MAXLENGTH);
@@ -76,21 +73,42 @@ int main() {
                 break;
 
             }
-            case '3': {
+            case 'l': {
                 listsentence();
                 break;
             }
-            case '4': {
+            case 'f': {
                 displayfree();
                 break;
             }
-            case '5': {
+            case '$': {
+
+                #ifndef PIC_VERSION
+                return 0;
+                #endif
+                break;
+            }
+            case 'h': {
+                UART_Write_Text("\n----- Menu -----\n"
+                                "h- Show the help message (this one)"
+                                "a- add a sentence\n"
+                                "d- delete a sentence\n"
+                                "l- list sentences\n"
+                                "f- display amount of free sells\n" // Done
+                                "r- play the default sentences\n"
+                                "s- set the default sentence\n" // Done
+                                "n- set next sentence as default\n" //Done
+                                "p- play all the sentences\n"
+                                "$- Stop the program (Only for PC)\n");
+                break;
+            }
+            case 'r': {
 
                 playDefault();
                 break;
 
             }
-            case '6': {
+            case 's': {
 
                 UART_Write_Text("Please input the number of the phrase to set default :\n");
 
@@ -101,13 +119,13 @@ int main() {
                 break;
 
             }
-            case '7': {
+            case 'n': {
 
 
                 setNextDefault();
                 break;
             }
-            case '8': {
+            case 'p': {
 
                 playAll();
                 break;
@@ -115,9 +133,4 @@ int main() {
             }
         }
     }
-
-
-
-
-    return 0;
 }

@@ -7,7 +7,7 @@
 #include "version.h"
 #include "function.h"
 
-#define MAXLENGTH 10
+#define MAXLENGTH 20
 
 
 #ifdef PIC_VERSION
@@ -25,10 +25,20 @@ void displayfree() {
 
     unsigned short value = eeprom_read(2);
     if(value != 0) {
-        UART_Write_Text("Nombre de valeurs libres : ");
-        UART_Write_Text(value);
+        UART_Write_Text("Space available : ");
+
+        if(value > 100){
+            UART_Write((char)(value/100+48));
+        }
+        value=value%10;
+        if(value < 10){
+            UART_Write((char)(value/10+48));
+        }
+        UART_Write((char)(value%10+48));
+        UART_Write('\n');
+
     }
-    else UART_Write_Text("Il n'y a plus d'espace disponible");
+    else UART_Write_Text("Any space available\n");
 
 
 }
@@ -37,15 +47,15 @@ void setDefault(unsigned short val) {
 
     unsigned short phrase = eeprom_read(1);
 
-    if(val > phrase || val<0) {
-        UART_Write_Text("THis sentence doesn't exist");
+    if(val > phrase) {
+        UART_Write_Text("setDefault error : This sentence doesn't exist\n");
         return;
     }
 
     eeprom_write(3, val);
-    UART_Write_Text(" The new sentence is the sentence number :");
+    UART_Write_Text(" Default entry is now :");
     UART_Write((char)(val+48));
-
+    UART_Write('\n');
 }
 
 void setNextDefault() {
@@ -53,13 +63,13 @@ void setNextDefault() {
     unsigned short phrase = eeprom_read(1);
 
     if(eeprom_read(3)+1>phrase){
-        UART_Write_Text("This sentence doesn't exist");
+        UART_Write_Text("nextDefault error : This sentence doesn't exist\n");
         return;
     }
 
     unsigned short val = (eeprom_read(3)+1);
     eeprom_write(3, val);
-    UART_Write_Text(" La nouvelle phrase par default est la phrase numéro : ");
+    UART_Write_Text(" Default entry is now : \n");
     UART_Write((char)(val+48));
 }
 
@@ -78,22 +88,23 @@ void addSentence(char* stc) {
     unsigned short phrase = eeprom_read(1);
 
     if(phrase == 9) {
-        UART_Write_Text("Add error: could not save new phrase");
+        UART_Write_Text("Add error: could not save new phrase\n");
         return;
     }
     if(strlen(stc) > eeprom_read(2)) {
-        UART_Write_Text("Add error: could not save new phrase");
+        UART_Write_Text("Add error: could not save new phrase\n");
         return;
     }
     if(strlen(stc) < 1){
-        UART_Write_Text("Can’t store Empty String");
+        UART_Write_Text("Add error: Can’t store Empty String\n");
+        return;
     }
 
-    UART_Write_Text("Adding phrase : ");
+    UART_Write_Text("Adding phrase : \n");
     UART_Write_Text(stc);
-    UART_Write_Text("in position ");
-    UART_Write((char)(phrase+48));
-    UART_Write_Text("\n");
+    UART_Write_Text("\n in position ");
+    UART_Write((char)((phrase+1)+48));
+    UART_Write('\n');
 
     eeprom_write(1, (phrase+1));
     eeprom_write(2, eeprom_read(2)-strlen(stc)*2); // ajout *2
@@ -101,7 +112,7 @@ void addSentence(char* stc) {
     if(phrase == 0) {
         eeprom_write(6, start);
         eeprom_write(7, strlen(stc));
-        UART_Write_Text("No definition in EEPROM");
+        UART_Write_Text("No definition in EEPROM\n");
     }
     else {
         unsigned short lStart = eeprom_read(6+2*(phrase-1));
@@ -146,7 +157,7 @@ void addSentence(char* stc) {
         lastVal= value;
     }
 
-    UART_Write_Text("New phrase saved");
+    UART_Write_Text("New phrase saved\n");
 
 
 }
@@ -157,6 +168,7 @@ void letter(unsigned short *tab, unsigned short size){
     #ifdef PIC_VERSION
         __delay_ms(2800); // 1 second delay
     #endif
+        UART_Write_Text("(-)..");
         return;
     }
 
@@ -165,27 +177,25 @@ void letter(unsigned short *tab, unsigned short size){
 
 
         if(tab[i]==0){
+            UART_Write('0');
 #ifdef PIC_VERSION
-            UART_Write('.');
             __delay_ms(400); // 1 second delay
             RC0 = 1; // LED ON
             __delay_ms(400); // 0.5 second delay
             RC0 = 0; // LED OFF
 #endif
 #ifndef PIC_VERSION
-            UART_Write_Text(". ");
             // sleep(1);
 #endif
         } else{
+            UART_Write('1');
 #ifdef PIC_VERSION
-            UART_Write('-');
             __delay_ms(400); // 1 second delay
             RC0 = 1; // LED ON
             __delay_ms(1200); // 1.5 second delay
             RC0 = 0; // LED OFF
 #endif
 #ifndef PIC_VERSION
-            UART_Write_Text("- ");
             //sleep(1);
 #endif
         }
@@ -214,7 +224,7 @@ void convert(unsigned short length, unsigned short value) {
 
 char getLetter(unsigned short val, unsigned short length) {
 
-    char res = 'A';
+    char res = ' ';
     for(unsigned short i=0; i<=36; i++){
         unsigned short val1 = tab2[i];
 
@@ -230,14 +240,14 @@ char getLetter(unsigned short val, unsigned short length) {
             return res;
         }
     }
-
+    return res;
 }
 
 void playAll() {
     unsigned short phrase = eeprom_read(1);
 
     if(phrase == 0) {
-        UART_Write_Text("Il n'y a aucune phrase enregistrer");
+        UART_Write_Text("playAll error : Any sentence saved.\n");
         return;
     }
 
@@ -246,17 +256,26 @@ void playAll() {
         unsigned short start = eeprom_read(6+i*2);
         unsigned short length = eeprom_read(7+i*2);
 
+        UART_Write_Text("Phrase #");
+        UART_Write((i+1)+48);
+        UART_Write('\n');
+
         for(unsigned short j=start; j<(start+length*2); j=j+2){
 
             unsigned short val = eeprom_read(j);
             unsigned short length2 = eeprom_read(j+1);
             char let = getLetter(val, length2);
 
+
+
+            if( let != ' ') UART_Write('(');
             display_7SEG(let, UART_LED);
+            if( let != ' ') UART_Write(')');
             convert(length2, val);
-            UART_Write_Text(" \n");
+            UART_Write('.');
 
         }
+        UART_Write('\n');
 
     }
 }
@@ -265,7 +284,7 @@ void listsentence() {
     unsigned short phrase = eeprom_read(1);
 
     if(phrase == 0) {
-        UART_Write_Text("Il n'y a aucune phrase enregistrer");
+        UART_Write_Text("listSentence error : Any sentence saved.\n");
         return;
     }
 
@@ -294,7 +313,7 @@ void delete(unsigned short val) {
     unsigned short phrase = eeprom_read(1);
 
     if(val > phrase || phrase == 0){
-        UART_Write_Text("Delete error : cannot delete an ghost sentence");
+        UART_Write_Text("Delete error : Phrase doesn’t exist\n");
         return;
     }
 
@@ -326,24 +345,23 @@ void delete(unsigned short val) {
     eeprom_write(2, nbFreeCell+(taille));
     eeprom_write(1, eeprom_read(1)-1);
 
-    UART_Write_Text("Sentence Delete");
+    UART_Write_Text("Sentence Delete\n");
 
 }
 
 void playDefault() {
 
-#ifdef PIC_VERSION
     unsigned short phrase = eeprom_read(1);
 
     if(phrase == 0) {
-        UART_Write_Text("Il n'y a aucune phrase enregistrer");
+        UART_Write_Text("playDefault error : Any sentence saved.\n");
         return;
     }
 
     int defaut = eeprom_read(3);
 
     if(defaut == 0) {
-        UART_Write_Text("No default sentence set");
+        UART_Write_Text("playDefault error : No default sentence set\n");
         return;
     }
 
@@ -356,12 +374,12 @@ void playDefault() {
         unsigned short length2 = eeprom_read(j+1);
         char let = getLetter(val, length2);
 
+        if( let != ' ') UART_Write('(');
         display_7SEG(let, UART_LED);
+        if( let != ' ') UART_Write(')');
         convert(length2, val);
+        UART_Write('.');
 
     }
-
-
-#endif
 
 }

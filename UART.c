@@ -11,7 +11,7 @@
 #define _XTAL_FREQ 20000000
 #endif
 #include "UART.h"
-
+#include "function.h"
 
 void UART_Clear_Buffer(){
 #ifndef PIC_VERSION
@@ -71,6 +71,7 @@ char UART_Read() {
 #endif
 #ifdef PIC_VERSION
     while(!RCIF) {
+
         if(RB0 == 0) {
             playDefault();
         }
