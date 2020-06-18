@@ -6,12 +6,22 @@ CMakeFiles/Projet.dir/Fake_EEPROM.c.o: ../Fake_EEPROM.h
 
 CMakeFiles/Projet.dir/UART.c.o: ../UART.c
 CMakeFiles/Projet.dir/UART.c.o: ../UART.h
+CMakeFiles/Projet.dir/UART.c.o: ../function.h
 CMakeFiles/Projet.dir/UART.c.o: ../version.h
 
+CMakeFiles/Projet.dir/function.c.o: ../Fake_EEPROM.h
+CMakeFiles/Projet.dir/function.c.o: ../UART.h
+CMakeFiles/Projet.dir/function.c.o: ../function.c
+CMakeFiles/Projet.dir/function.c.o: ../function.h
+CMakeFiles/Projet.dir/function.c.o: ../pragma.h
+CMakeFiles/Projet.dir/function.c.o: ../seven-seg.h
+CMakeFiles/Projet.dir/function.c.o: ../version.h
+
+CMakeFiles/Projet.dir/main.c.o: ../Fake_EEPROM.h
 CMakeFiles/Projet.dir/main.c.o: ../UART.h
+CMakeFiles/Projet.dir/main.c.o: ../function.h
 CMakeFiles/Projet.dir/main.c.o: ../main.c
 CMakeFiles/Projet.dir/main.c.o: ../pragma.h
-CMakeFiles/Projet.dir/main.c.o: ../seven-seg.h
 CMakeFiles/Projet.dir/main.c.o: ../version.h
 
 CMakeFiles/Projet.dir/seven-seg.c.o: ../UART.h

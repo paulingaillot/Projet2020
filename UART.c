@@ -2,6 +2,7 @@
 // Created by isen on 4/22/20.
 //
 #include "version.h"
+#include "function.h"
 #ifndef PIC_VERSION
 #include <stdio.h>
 #endif
@@ -10,6 +11,7 @@
 #define _XTAL_FREQ 20000000
 #endif
 #include "UART.h"
+
 
 void UART_Clear_Buffer(){
 #ifndef PIC_VERSION
@@ -46,7 +48,7 @@ void UART_Write(char data) {
     printf("%c",data);
 #endif
 #ifdef PIC_VERSION
-    while(!TRMT);
+    while(!TRMT) ;
     TXREG = data;
 #endif
 }
@@ -69,7 +71,9 @@ char UART_Read() {
 #endif
 #ifdef PIC_VERSION
     while(!RCIF) {
-
+        if(RB0 == 0) {
+            playDefault();
+        }
     }
 
     return RCREG;

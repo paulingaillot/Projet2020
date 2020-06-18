@@ -109,18 +109,18 @@ CMakeFiles/Projet.dir/Fake_EEPROM.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Projet.dir/Fake_EEPROM.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/Fake_EEPROM.c" -o CMakeFiles/Projet.dir/Fake_EEPROM.c.s
 
-CMakeFiles/Projet.dir/menu.c.o: CMakeFiles/Projet.dir/flags.make
-CMakeFiles/Projet.dir/menu.c.o: ../menu.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Projet.dir/menu.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Projet.dir/menu.c.o   -c "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/menu.c"
+CMakeFiles/Projet.dir/function.c.o: CMakeFiles/Projet.dir/flags.make
+CMakeFiles/Projet.dir/function.c.o: ../function.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Projet.dir/function.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Projet.dir/function.c.o   -c "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/function.c"
 
-CMakeFiles/Projet.dir/menu.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Projet.dir/menu.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/menu.c" > CMakeFiles/Projet.dir/menu.c.i
+CMakeFiles/Projet.dir/function.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Projet.dir/function.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/function.c" > CMakeFiles/Projet.dir/function.c.i
 
-CMakeFiles/Projet.dir/menu.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Projet.dir/menu.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/menu.c" -o CMakeFiles/Projet.dir/menu.c.s
+CMakeFiles/Projet.dir/function.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Projet.dir/function.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/function.c" -o CMakeFiles/Projet.dir/function.c.s
 
 # Object files for target Projet
 Projet_OBJECTS = \
@@ -128,7 +128,7 @@ Projet_OBJECTS = \
 "CMakeFiles/Projet.dir/UART.c.o" \
 "CMakeFiles/Projet.dir/seven-seg.c.o" \
 "CMakeFiles/Projet.dir/Fake_EEPROM.c.o" \
-"CMakeFiles/Projet.dir/menu.c.o"
+"CMakeFiles/Projet.dir/function.c.o"
 
 # External object files for target Projet
 Projet_EXTERNAL_OBJECTS =
@@ -137,7 +137,7 @@ Projet: CMakeFiles/Projet.dir/main.c.o
 Projet: CMakeFiles/Projet.dir/UART.c.o
 Projet: CMakeFiles/Projet.dir/seven-seg.c.o
 Projet: CMakeFiles/Projet.dir/Fake_EEPROM.c.o
-Projet: CMakeFiles/Projet.dir/menu.c.o
+Projet: CMakeFiles/Projet.dir/function.c.o
 Projet: CMakeFiles/Projet.dir/build.make
 Projet: CMakeFiles/Projet.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Linking C executable Projet"

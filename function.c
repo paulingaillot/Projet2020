@@ -15,6 +15,9 @@
 #include <xc.h>  // Needed by the MicroChip compiler
 #define _XTAL_FREQ 20000000 // Define the MCU Frequency ; needed by the MicroChip compiler
 #endif
+#ifndef PIC_VERSION
+#include "Fake_EEPROM.h"
+#endif
 
 
 
@@ -151,7 +154,9 @@ void addSentence(char* stc) {
 void letter(unsigned short *tab, unsigned short size){
 
     if(size == 0){
+    #ifdef PIC_VERSION
         __delay_ms(2800); // 1 second delay
+    #endif
         return;
     }
 
@@ -168,7 +173,7 @@ void letter(unsigned short *tab, unsigned short size){
             RC0 = 0; // LED OFF
 #endif
 #ifndef PIC_VERSION
-            printf(". ");
+            UART_Write_Text(". ");
             // sleep(1);
 #endif
         } else{
@@ -180,7 +185,7 @@ void letter(unsigned short *tab, unsigned short size){
             RC0 = 0; // LED OFF
 #endif
 #ifndef PIC_VERSION
-            printf("- ");
+            UART_Write_Text("- ");
             //sleep(1);
 #endif
         }
@@ -192,17 +197,19 @@ void convert(unsigned short length, unsigned short value) {
     unsigned short i = 0;
     unsigned short tabBits[8] = {0};
     char mask = 0b00000001;
-    for (i = 8; i > (8-length); i--) {
-        tabBits[i] = ((value && mask) != 0);
-        mask <<= 1;
+
+    for(int i=7; i>=0; i--){
+        int val = value & mask;
+        if(val == 0) {
+            tabBits[7-i] = 0;
+        }
+        else {
+            tabBits[7-i] = 1;
+        }
+        mask = mask << 1;
     }
 
-    unsigned short tabBits2[8] = {0};
-    for(unsigned short i=0; i<8; i++){
-        tabBits2[i] = tabBits2[8-i];
-    }
-
-    letter(tabBits2, length);
+    letter(tabBits, length);
 }
 
 char getLetter(unsigned short val, unsigned short length) {
@@ -227,7 +234,6 @@ char getLetter(unsigned short val, unsigned short length) {
 }
 
 void playAll() {
-#ifdef PIC_VERSION
     unsigned short phrase = eeprom_read(1);
 
     if(phrase == 0) {
@@ -248,11 +254,11 @@ void playAll() {
 
             display_7SEG(let, UART_LED);
             convert(length2, val);
+            UART_Write_Text(" \n");
 
         }
 
     }
-#endif
 }
 
 void listsentence() {

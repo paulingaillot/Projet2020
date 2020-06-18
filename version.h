@@ -4,6 +4,6 @@
 
 #ifndef VERSION_H
 #define VERSION_H
-#define PIC_VERSION
+//#define PIC_VERSION
 #endif
 

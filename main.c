@@ -11,6 +11,9 @@
 #include <xc.h>  // Needed by the MicroChip compiler
 #define _XTAL_FREQ 20000000 // Define the MCU Frequency ; needed by the MicroChip compiler
 #endif
+#ifndef PIC_VERSION
+#include "Fake_EEPROM.h"
+#endif
 
 
 int main() {

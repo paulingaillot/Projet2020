@@ -177,6 +177,33 @@ UART.c.s:
 	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/UART.c.s
 .PHONY : UART.c.s
 
+function.o: function.c.o
+
+.PHONY : function.o
+
+# target to build an object file
+function.c.o:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/function.c.o
+.PHONY : function.c.o
+
+function.i: function.c.i
+
+.PHONY : function.i
+
+# target to preprocess a source file
+function.c.i:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/function.c.i
+.PHONY : function.c.i
+
+function.s: function.c.s
+
+.PHONY : function.s
+
+# target to generate assembly for a file
+function.c.s:
+	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/function.c.s
+.PHONY : function.c.s
+
 main.o: main.c.o
 
 .PHONY : main.o
@@ -203,33 +230,6 @@ main.s: main.c.s
 main.c.s:
 	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/main.c.s
 .PHONY : main.c.s
-
-menu.o: menu.c.o
-
-.PHONY : menu.o
-
-# target to build an object file
-menu.c.o:
-	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/menu.c.o
-.PHONY : menu.c.o
-
-menu.i: menu.c.i
-
-.PHONY : menu.i
-
-# target to preprocess a source file
-menu.c.i:
-	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/menu.c.i
-.PHONY : menu.c.i
-
-menu.s: menu.c.s
-
-.PHONY : menu.s
-
-# target to generate assembly for a file
-menu.c.s:
-	$(MAKE) -f CMakeFiles/Projet.dir/build.make CMakeFiles/Projet.dir/menu.c.s
-.PHONY : menu.c.s
 
 seven-seg.o: seven-seg.c.o
 
@@ -273,12 +273,12 @@ help:
 	@echo "... UART.o"
 	@echo "... UART.i"
 	@echo "... UART.s"
+	@echo "... function.o"
+	@echo "... function.i"
+	@echo "... function.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... menu.o"
-	@echo "... menu.i"
-	@echo "... menu.s"
 	@echo "... seven-seg.o"
 	@echo "... seven-seg.i"
 	@echo "... seven-seg.s"
