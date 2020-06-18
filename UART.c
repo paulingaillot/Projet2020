@@ -7,7 +7,6 @@
 #endif
 #ifdef PIC_VERSION
 #include <xc.h>
-#include "menu.h"
 #define _XTAL_FREQ 20000000
 #endif
 #include "UART.h"
@@ -70,9 +69,7 @@ char UART_Read() {
 #endif
 #ifdef PIC_VERSION
     while(!RCIF) {
-        if (RB0 == 0) {
-            playDefault();
-        }
+
     }
 
     return RCREG;
@@ -95,9 +92,6 @@ void UART_Read_Text(char* Output, unsigned int length ) {
 }
 
 #ifdef PIC_VERSION
-char UART_TX_Empty(void) {
-    return TRMT;
-}
 
 char UART_Data_Ready(void) {
     return RCIF;

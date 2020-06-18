@@ -1,20 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "UART.h"
-#include <string.h>
-#include "seven-seg.h"
-#include "menu.h"
-#define MAXLENGTH 20
+#include "function.h"
+#include "version.h"
+#define MAXLENGTH 10
 
-#ifndef PIC_VERION
-#include "Fake_EEPROM.h"
-#endif
 
 #ifdef PIC_VERSION
 #include "pragma.h"
 #include <xc.h>  // Needed by the MicroChip compiler
 #define _XTAL_FREQ 20000000 // Define the MCU Frequency ; needed by the MicroChip compiler
 #endif
+
 
 int main() {
 
@@ -33,11 +30,9 @@ int main() {
           eeprom_write(4, 0);
           eeprom_write(5, 0);
 
-
     UART_Init();
 
-    while(1) {
-
+    while(1){
         UART_Write_Text("----- Menu -----\n"
                         "1- add a sentence\n"
                         "2- delete a sentence\n"
@@ -53,60 +48,72 @@ int main() {
 
         UART_Read_Text(echo, MAXLENGTH);
 
+        switch(echo[0]) {
 
-        if (echo[0] == '1') {
+            case '1': {
 
-            UART_Write_Text(" Please input a new phrase:\n");
+                UART_Write_Text(" Please input a new phrase:\n");
 
-            char echo2[MAXLENGTH];
-            UART_Read_Text(echo2, MAXLENGTH);
-
-
-            addSentence(echo2);
-
-        }
-        if (echo[0] == '2') {
-
-            UART_Write_Text("« Please input the number of the sentence to delete:\n");
-
-            char val[MAXLENGTH];
-            UART_Read_Text(val, MAXLENGTH);
-
-            delete((int) (val[0] - 48));
-
-        }
-        if (echo[0] == '3') {
-            listsentence();
-        }
-        if (echo[0] == '4') {
-            displayfree();
-        }
-        if (echo[0] == '5') {
-
-            playDefault();
-
-        }
-        if (echo[0] == '6') {
-
-            UART_Write_Text("Please input the number of the phrase to set default :\n");
-
-            char val[MAXLENGTH];
-            UART_Read_Text(val, MAXLENGTH);
-
-            setDefault((int) (val[0] - 48));
-
-        }
-        if (echo[0] == '7') {
+                char echo2[MAXLENGTH];
+                UART_Read_Text(echo2, MAXLENGTH);
 
 
-            setNextDefault();
-        }
-        if (echo[0] == '8') {
+                addSentence(echo2);
+                break;
 
-            playAll();
+            }
+            case '2': {
 
+                UART_Write_Text("« Please input the number of the sentence to delete:\n");
+
+                char val[MAXLENGTH];
+                UART_Read_Text(val, MAXLENGTH);
+
+                delete((int) (val[0] - 48));
+                break;
+
+            }
+            case '3': {
+                listsentence();
+                break;
+            }
+            case '4': {
+                displayfree();
+                break;
+            }
+            case '5': {
+
+                playDefault();
+                break;
+
+            }
+            case '6': {
+
+                UART_Write_Text("Please input the number of the phrase to set default :\n");
+
+                char val[MAXLENGTH];
+                UART_Read_Text(val, MAXLENGTH);
+
+                setDefault((int) (val[0] - 48));
+                break;
+
+            }
+            case '7': {
+
+
+                setNextDefault();
+                break;
+            }
+            case '8': {
+
+                playAll();
+                break;
+
+            }
         }
     }
+
+
 
 
     return 0;

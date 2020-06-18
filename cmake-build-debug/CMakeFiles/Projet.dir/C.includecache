@@ -6,9 +6,45 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/Fake_EEPROM.c
-Fake_EEPROM.h
-/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/Fake_EEPROM.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.c
+version.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/version.h
+stdio.h
+-
+xc.h
+-
+menu.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/menu.h
+UART.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.h
 
-/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/Fake_EEPROM.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.h
+version.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/version.h
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/main.c
+UART.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.h
+seven-seg.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/seven-seg.h
+pragma.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/pragma.h
+xc.h
+-
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/pragma.h
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/seven-seg.c
+version.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/version.h
+seven-seg.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/seven-seg.h
+UART.h
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/UART.h
+xc.h
+-
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/seven-seg.h
+
+/mnt/c/Users/Pauli/OneDrive - yncréa/dossier paulin/ISEN/Année 1/Algo/TPs/Projet/version.h
 

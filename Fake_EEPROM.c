@@ -5,6 +5,7 @@
 
 unsigned char EEPROM[256]={0};
 
+
 unsigned short eeprom_read(unsigned short position) {
     return EEPROM[position];
 }

@@ -10,5 +10,5 @@
 #define UART_LED 2
 
 void physical_Display(char symbol);
-void display_7SEG(char val, unsigned short mode);
+void display_7SEG( unsigned char val, unsigned short mode);
 #endif
