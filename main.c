@@ -74,7 +74,7 @@ void addSentence(char* stc) {
     UART_Write_Text("Adding phrase : ");
     UART_Write_Text(stc);
     UART_Write_Text("in position ");
-    UART_Write_Text(phrase);
+    UART_Write(phrase);
     UART_Write_Text("\n");
 
     eeprom_write(1, (phrase+1));
@@ -88,9 +88,9 @@ void addSentence(char* stc) {
     else {
         int lStart = eeprom_read(6+2*(phrase-1));
         int llength = eeprom_read(7+2*(phrase-1));
-        start = lStart + llength+ 1;
-        eeprom_write(lStart+2, start);
-        eeprom_write(llength+2, strlen(stc));
+        start = lStart + llength*2 + 1;
+        eeprom_write((6+2*(phrase-1))+2, start);
+        eeprom_write((6+2*(phrase-1))+3, strlen(stc));
     }
 
     char lastVal = ' ';
@@ -226,9 +226,8 @@ void playAll() {
             int length2 = eeprom_read(j+1);
             char let = getLetter(val, length2);
 
-
+            display_7SEG(let, UART_LED);
             convert(length2, val);
-            //display_7SEG(let, UART_LED);
 
         }
 
@@ -238,46 +237,75 @@ void playAll() {
 
 void listsentence() {
 #ifdef PIC_VERSION
+    int phrase = eeprom_read(1);
 
-    for(int i=24; i<35; i++) {
-
-        int val = eeprom_read(24+i);
-        int length = eeprom_read(24+i+1);
-
-            convert(length, val);
-
-           UART_Write_Text("Playing the sequence on the physical display\n");
-           display_7SEG(getLetter(val, length), LED_ONLY);
-            UART_Write_Text("Playing the sequence on display & UART\n");
-            display_7SEG(getLetter(val, length), UART_LED);
-            display_7SEG(getLetter(val, length), UART_LED);
-
+    if(phrase == 0) {
+        UART_Write_Text("Il n'y a aucune phrase enregistrer");
+        return;
     }
 
-    /*int phrase = eeprom_read(1);
-    for(int i=6; i<=(6+(phrase-1)*2+1); i=i+2) {
-        int start = eeprom_read(i);
-        for(int j =start; j<=(start+2*eeprom_read(i+1)); j=j+2) {
-            int val = eeprom_read(24+start);
-            int length = eeprom_read(24+start+1);
+    for(int i=0; i<phrase; i++){
 
-            convert(length, val);
+        int start = eeprom_read(6+i*2);
+        int length = eeprom_read(7+i*2);
 
-            char letter = getLetter(val, lenth);
+        for(int j=start; j<(start+length*2); j=j+2){
 
-            UART_Write_Text("Playing the sequence on the physical display\n");
-           display_7SEG(letter, LED_ONLY);
-            UART_Write_Text("Playing the sequence on display & UART\n");
-            display_7SEG(letter, UART_LED);
-            __delay_ms(1000);
+
+            int val = eeprom_read(j);
+            int length2 = eeprom_read(j+1);
+            char let = getLetter(val, length2);
+
+            UART_Write(let);
+
         }
+        UART_Write_Text("\n");
 
-    }*/
+    }
 #endif
 }
 
+void delete(int val) {
+    #ifdef PIC_VERSION
+    int phrase = eeprom_read(1);
+
+    if(val > phrase){
+        UART_Write_Text("Delete error : cannot delete an ghost sentence");
+        return;
+    }
+
+    int taille = eeprom_read(7+2*(val-1));
+
+    if(val == phrase){
+        eeprom_write(1, (eeprom_read(1)-1));
+    }
+    else {
+        eeprom_write(2, (eeprom_read(2)-eeprom_read(6+2*(val-1))));
+
+        int start = eeprom_read(6+2*(val-1));
+        int next = eeprom_read(6+2*(val));
+
+        for(int i=(6+2*(val-1)); i<(6+2*phrase); i=i+2){
+            eeprom_write(i, (eeprom_read(i+2)-2*taille));
+            eeprom_write(i+1, i+3);
+        }
+
+        for(int i=0; i<(eeprom_read(6+2*(phrase-1))+eeprom_read(7+2*(phrase-1))); i++){
+            eeprom_write(start+i, eeprom_read(next+i));
+        }
+        eeprom_write(1, (eeprom_read(1)-1));
+
+    }
+
+    UART_Write_Text("Sentence Delete");
+
+
+    #endif
+
+
+}
+
 int main() {
-    printf("Hello, World!\n");
 
     #ifdef PIC_VERSION
       OPTION_REG = (OPTION_REG & 0b01111111); // Activating pull-up on PORTB pins
@@ -288,14 +316,14 @@ int main() {
     #endif
 
     #ifdef PIC_VERSION
-      if(eeprom_read(0) != 1) {
-        eeprom_write(0, 1);
-        eeprom_write(1, 0);
-        eeprom_write(2, 232);
-        eeprom_write(3, 0);
-        eeprom_write(4, 0);
-        eeprom_write(5, 0);
-        }
+      if(eeprom_read(0) == 0) {
+          eeprom_write(0, 1);
+          eeprom_write(1, 0);
+          eeprom_write(2, 232);
+          eeprom_write(3, 0);
+          eeprom_write(4, 0);
+          eeprom_write(5, 0);
+      }
     #endif
 
 
@@ -317,7 +345,6 @@ int main() {
 
     UART_Read_Text(echo, MAXLENGTH);
 
-    UART_Write(echo);
     if(echo[0] == '1')  {
 
         UART_Write_Text("« Please input a new phrase:\n");
@@ -331,6 +358,13 @@ int main() {
     }
     if(echo[0] == '2')  {
 
+        UART_Write_Text("« Please input the number of the sentence to delete:\n");
+
+        char val[MAXLENGTH];
+        UART_Read_Text(val, MAXLENGTH);
+
+        delete((int)(val[0]-48));
+
     }
     if(echo[0] == '3')  {
         listsentence();
@@ -341,13 +375,17 @@ int main() {
     if(echo[0] == '5') ;
     if(echo[0] == '6') {
 
+        UART_Write_Text("Please input the number of the phrase to set default :\n");
+
         char val[MAXLENGTH];
         UART_Read_Text(val, MAXLENGTH);
 
-        setDefault((int)(val-48));
+        setDefault((int)(val[0]-48));
 
     }
     if(echo[0] == '7') {
+
+
         setNextDefault();
     }
     if(echo[0] == '8') {
