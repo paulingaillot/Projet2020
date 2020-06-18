@@ -29,18 +29,34 @@ void displayfree() {
 
 void setDefault(int val) {
 #ifdef PIC_VERSION
+
+    int phrase = eeprom_read(1);
+
+    if(val > phrase || val<0) {
+        UART_Write_Text("THis sentence doesn't exist");
+        return;
+    }
+
     eeprom_write(3, val);
-    UART_Write_Text(" La nouvelle phrase par default est la phrase numéro :");
-    UART_Write_Text(val);
+    UART_Write_Text(" The new sentence is the sentence number :");
+    UART_Write((char)(val+48));
 #endif
 }
 
 void setNextDefault() {
 #ifdef PIC_VERSION
+
+    int phrase = eeprom_read(1);
+
+    if(eeprom_read(3)+1>phrase){
+        UART_Write_Text("This sentence doesn't exist");
+        return;
+    }
+
     int val = (eeprom_read(3)+1);
     eeprom_write(3, val);
     UART_Write_Text(" La nouvelle phrase par default est la phrase numéro : ");
-    UART_Write_Text(val);
+    UART_Write((char)(val+48));
 #endif
 }
 
@@ -74,7 +90,7 @@ void addSentence(char* stc) {
     UART_Write_Text("Adding phrase : ");
     UART_Write_Text(stc);
     UART_Write_Text("in position ");
-    UART_Write(phrase);
+    UART_Write((char)(phrase+48));
     UART_Write_Text("\n");
 
     eeprom_write(1, (phrase+1));
@@ -305,6 +321,43 @@ void delete(int val) {
 
 }
 
+void playDefault() {
+
+#ifdef PIC_VERSION
+    int phrase = eeprom_read(1);
+
+    if(phrase == 0) {
+        UART_Write_Text("Il n'y a aucune phrase enregistrer");
+        return;
+    }
+
+    int defaut = eeprom_read(3);
+
+    if(defaut == 0) {
+        UART_Write_Text("No default sentence set");
+        return;
+    }
+
+    int start = eeprom_read(6+(defaut-1)*2);
+    int length = eeprom_read(7+(defaut-1)*2);
+
+    for(int j=start; j<(start+length*2); j=j+2){
+
+        int val = eeprom_read(j);
+        int length2 = eeprom_read(j+1);
+        char let = getLetter(val, length2);
+
+        display_7SEG(let, UART_LED);
+        convert(length2, val);
+
+    }
+
+
+
+#endif
+
+}
+
 int main() {
 
     #ifdef PIC_VERSION
@@ -372,7 +425,11 @@ int main() {
     if(echo[0] == '4')  {
         displayfree();
     }
-    if(echo[0] == '5') ;
+    if(echo[0] == '5')  {
+
+        playDefault();
+
+    }
     if(echo[0] == '6') {
 
         UART_Write_Text("Please input the number of the phrase to set default :\n");
