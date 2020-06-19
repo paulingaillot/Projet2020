@@ -71,9 +71,23 @@ char UART_Read() {
 #endif
 #ifdef PIC_VERSION
     while(!RCIF) {
-
         if(RB0 == 0) {
-            playDefault();
+            __delay_ms(100);
+
+            unsigned short o=0;
+            for(unsigned short i=0; i<15;i++){
+                if(RB0==1) {
+                    o=1;
+                    i=16;
+                }
+                __delay_ms(100);
+            }
+
+            if(o==1) playDefault();
+            else {
+                 setNextDefault();
+                 __delay_ms(2000);
+            }
         }
     }
 

@@ -7,9 +7,6 @@
 #include "version.h"
 #include "function.h"
 
-#define MAXLENGTH 20
-
-
 #ifdef PIC_VERSION
 #include "pragma.h"
 #include <xc.h>  // Needed by the MicroChip compiler
@@ -47,6 +44,10 @@ void setDefault(unsigned short val) {
 
     unsigned short phrase = eeprom_read(1);
 
+    if(val == 0){
+        UART_Write_Text("setDefault error : Invalid Entry\n");
+        return;
+    }
     if(val > phrase) {
         UART_Write_Text("setDefault error : This sentence doesn't exist\n");
         return;
@@ -124,7 +125,8 @@ void addSentence(char* stc) {
 
     char lastVal = ' ';
     unsigned short o=0;
-    for(int i=0; i< strlen(stc); i++) {
+    unsigned short valll = strlen(stc);
+    for(int i=0; i< valll; i++) {
 
         char value = stc[i];
 
@@ -201,6 +203,9 @@ void letter(unsigned short *tab, unsigned short size){
         }
 
     }
+    #ifdef PIC_VERSION
+        __delay_ms(1200); // 1 second delay
+    #endif
 }
 
 void convert(unsigned short length, unsigned short value) {
@@ -244,14 +249,14 @@ char getLetter(unsigned short val, unsigned short length) {
 }
 
 void playAll() {
-    unsigned short phrase = eeprom_read(1);
 
-    if(phrase == 0) {
+
+    if(eeprom_read(1) == 0) {
         UART_Write_Text("playAll error : Any sentence saved.\n");
         return;
     }
 
-    for(unsigned short i=0; i<phrase; i++){
+    for(unsigned short i=0; i<eeprom_read(1); i++){
 
         unsigned short start = eeprom_read(6+i*2);
         unsigned short length = eeprom_read(7+i*2);
@@ -281,14 +286,13 @@ void playAll() {
 }
 
 void listsentence() {
-    unsigned short phrase = eeprom_read(1);
 
-    if(phrase == 0) {
+    if(eeprom_read(1) == 0) {
         UART_Write_Text("listSentence error : Any sentence saved.\n");
         return;
     }
 
-    for(unsigned short i=0; i<phrase; i++){
+    for(unsigned short i=0; i<eeprom_read(1); i++){
 
         unsigned short start = eeprom_read(6+i*2);
         unsigned short length = eeprom_read(7+i*2);
@@ -310,27 +314,30 @@ void listsentence() {
 
 void delete(unsigned short val) {
 
-    unsigned short phrase = eeprom_read(1);
 
-    if(val > phrase || phrase == 0){
+    if(val == 0) {
+        UART_Write_Text("Delete error : Invalid Entry\n");
+        return;
+    }
+    if(val > eeprom_read(1) || eeprom_read(1) == 0){
         UART_Write_Text("Delete error : Phrase doesn’t exist\n");
         return;
     }
 
     unsigned short taille = eeprom_read(7+2*(val-1))*2; // ajout *2
 
-    if(val != phrase){
+    if(val != eeprom_read(1)){
         unsigned short start = eeprom_read(6+2*(val-1));
         unsigned short next = eeprom_read(6+2*(val));
-        unsigned short endOfUART = eeprom_read(6+2*(phrase-1))+eeprom_read(7+2*(phrase-1))*2; // ajout *2
+        unsigned short endOfUART = eeprom_read(6+2*(eeprom_read(1)-1))+eeprom_read(7+2*(eeprom_read(1)-1))*2; // ajout *2
         unsigned short sizeOfUART = endOfUART-next;
 
-        for(int i=(6+2*(val-1)); i<(6+2*phrase)-2; i=i+2){
+        for(int i=(6+2*(val-1)); i<(6+2*eeprom_read(1))-2; i=i+2){
             eeprom_write(i, (eeprom_read(i+2)-taille));
             eeprom_write(i+1, eeprom_read(i+3));
         }
-        eeprom_write(6+2*(phrase-1), 0);
-        eeprom_write(7+2*(phrase-1), 0);
+        eeprom_write(6+2*(eeprom_read(1)-1), 0);
+        eeprom_write(7+2*(eeprom_read(1)-1), 0);
 
 
         for(unsigned short i=0; i<sizeOfUART; i++){
@@ -341,8 +348,7 @@ void delete(unsigned short val) {
         eeprom_write(6+2*(val-1), 0);
         eeprom_write(7+2*(val-1), 0);
     }
-    unsigned short nbFreeCell = eeprom_read(2);
-    eeprom_write(2, nbFreeCell+(taille));
+    eeprom_write(2, eeprom_read(2)+(taille));
     eeprom_write(1, eeprom_read(1)-1);
 
     UART_Write_Text("Sentence Delete\n");
@@ -351,9 +357,7 @@ void delete(unsigned short val) {
 
 void playDefault() {
 
-    unsigned short phrase = eeprom_read(1);
-
-    if(phrase == 0) {
+    if(eeprom_read(1) == 0) {
         UART_Write_Text("playDefault error : Any sentence saved.\n");
         return;
     }

@@ -3,7 +3,7 @@
 #include "UART.h"
 #include "function.h"
 #include "version.h"
-#define MAXLENGTH 20
+#define MAXLENGTH 30
 
 
 #ifdef PIC_VERSION
@@ -53,11 +53,10 @@ int main() {
 
                 UART_Write_Text(" Please input a new phrase:\n");
 
-                char echo2[MAXLENGTH];
-                UART_Read_Text(echo2, MAXLENGTH);
+                UART_Read_Text(echo, MAXLENGTH);
 
 
-                addSentence(echo2);
+                addSentence(echo);
                 break;
 
             }
@@ -66,10 +65,9 @@ int main() {
                 if(eeprom_read(1) !=0) UART_Write_Text("Entry to delete: \n");
                 else UART_Write_Text("deleteError : No phrase stored ");
 
-                char val[MAXLENGTH];
-                UART_Read_Text(val, MAXLENGTH);
+                UART_Read_Text(echo, MAXLENGTH);
 
-                delete((int) (val[0] - 48));
+                delete((int) (echo[0] - 48));
                 break;
 
             }
@@ -112,10 +110,9 @@ int main() {
 
                 UART_Write_Text("Please input the number of the phrase to set default :\n");
 
-                char val[MAXLENGTH];
-                UART_Read_Text(val, MAXLENGTH);
+                UART_Read_Text(echo, MAXLENGTH);
 
-                setDefault((int) (val[0] - 48));
+                setDefault((int) (echo[0] - 48));
                 break;
 
             }
