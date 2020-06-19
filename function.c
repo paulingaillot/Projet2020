@@ -70,8 +70,9 @@ void setNextDefault() {
 
     unsigned short val = (eeprom_read(3)+1);
     eeprom_write(3, val);
-    UART_Write_Text(" Default entry is now : \n");
+    UART_Write_Text(" Default entry is now : ");
     UART_Write((char)(val+48));
+    UART_Write('\n');
 }
 
 unsigned short tab1[26]= {2, 4, 4, 3, 1, 4, 3, 4, 2, 4, 3, 4, 2, 2, 3, 4, 4, 3,
@@ -390,5 +391,6 @@ void playDefault() {
         UART_Write('.');
 
     }
+    UART_Write('\n');
 
 }

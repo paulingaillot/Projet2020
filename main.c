@@ -62,12 +62,13 @@ int main() {
             }
             case 'd': {
 
-                if(eeprom_read(1) !=0) UART_Write_Text("Entry to delete: \n");
-                else UART_Write_Text("deleteError : No phrase stored ");
+                    UART_Write_Text("Entry to delete: \n");
 
-                UART_Read_Text(echo, MAXLENGTH);
+                    UART_Read_Text(echo, MAXLENGTH);
 
-                delete((int) (echo[0] - 48));
+                    delete((int) (echo[0] - 48));
+
+
                 break;
 
             }

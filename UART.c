@@ -83,7 +83,12 @@ char UART_Read() {
                 __delay_ms(100);
             }
 
-            if(o==1) playDefault();
+            if(o==1)  {
+                playDefault();
+                #ifdef PIC_VERSION
+                     PORTD = 0x0;
+                #endif
+            }
             else {
                  setNextDefault();
                  __delay_ms(2000);
