@@ -89,15 +89,25 @@ void addSentence(char* stc) {
     unsigned short start = 24;
     unsigned short phrase = eeprom_read(1);
 
+    char lastval = ' ';
+    int size =0;
+    for(int i=0; i<strlen(stc); i++){
+        char val = stc[i];
+        if((val==32 && lastval != 32) || (val>=48 && val<=57) || (val >=65 && val <=90) || (val>=97 && val <=122)) {
+            size++;
+        }
+        lastval = val;
+    }
+
     if(phrase == 9) {
         UART_Write_Text("Add error: could not save new phrase\n");
         return;
     }
-    if(strlen(stc) > eeprom_read(2)) {
+    if(size*2 > eeprom_read(2)) {
         UART_Write_Text("Add error: could not save new phrase\n");
         return;
     }
-    if(strlen(stc) < 1){
+    if(size < 1){
         UART_Write_Text("Add error: Can’t store Empty String\n");
         return;
     }
