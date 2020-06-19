@@ -186,7 +186,7 @@ void letter(unsigned short *tab, unsigned short size){
     #ifdef PIC_VERSION
         __delay_ms(2800); // 1 second delay
     #endif
-        UART_Write_Text("(-)..");
+        UART_Write_Text(".");
         return;
     }
 
@@ -289,9 +289,9 @@ void playAll() {
 
 
 
-            if( let != ' ') UART_Write('(');
+            UART_Write('(');
             display_7SEG(let, UART_LED);
-            if( let != ' ') UART_Write(')');
+            UART_Write(')');
             convert(length2, val);
             UART_Write('.');
 
@@ -394,9 +394,7 @@ void playDefault() {
         unsigned short length2 = eeprom_read(j+1);
         char let = getLetter(val, length2);
 
-        if( let != ' ') UART_Write('(');
-        display_7SEG(let, UART_LED);
-        if( let != ' ') UART_Write(')');
+        display_7SEG(let, LED_ONLY);
         convert(length2, val);
         UART_Write('.');
 

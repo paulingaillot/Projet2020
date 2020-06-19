@@ -38,5 +38,6 @@ void display_7SEG(unsigned char val, unsigned short mode) {
     }
     if (mode == UART_ONLY || mode == UART_LED){
         if((val>=48 && val<=57) || (val>=65 && val<=90)) UART_Write(val);
+        else UART_Write('-');
     }
 }
