@@ -88,7 +88,7 @@ int main() {
             }
             case 'h': {
                 UART_Write_Text("\n----- Menu -----\n"
-                                "h- Show the help message (this one)"
+                                "h- Show the help message (this one)\n"
                                 "a- add a sentence\n"
                                 "d- delete a sentence\n"
                                 "l- list sentences\n"

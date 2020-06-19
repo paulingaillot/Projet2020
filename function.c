@@ -108,7 +108,6 @@ void addSentence(char* stc) {
     UART_Write('\n');
 
     eeprom_write(1, (phrase+1));
-    eeprom_write(2, eeprom_read(2)-strlen(stc)*2); // ajout *2
 
     if(phrase == 0) {
         eeprom_write(6, start);
@@ -120,10 +119,10 @@ void addSentence(char* stc) {
         unsigned short llength = eeprom_read(7+2*(phrase-1))*2; // ajout *2
         start = lStart + llength;
         eeprom_write((6+2*(phrase-1))+2, start);
-        eeprom_write((7+2*(phrase-1))+2, strlen(stc));
     }
 
     char lastVal = ' ';
+    int nblettre = 0;
     unsigned short o=0;
     unsigned short valll = strlen(stc);
     for(int i=0; i< valll; i++) {
@@ -138,6 +137,7 @@ void addSentence(char* stc) {
             unsigned short val1 = tab2[value-65];
             unsigned short val2 = tab1[value-65];
 
+            nblettre++;
             eeprom_write(start+o, val1);
 
             eeprom_write(start+o+1, val2);
@@ -146,11 +146,14 @@ void addSentence(char* stc) {
         else if(value >=48 && value <=57)  {
             unsigned short val1 = tab2[26+value-48];
             unsigned short val2 = 5;
+
+            nblettre++;
             eeprom_write(start+o, val1);
             eeprom_write(start+o+1, val2);
             o=o+2;
         }
         else if(value == 32 && lastVal != 32) {
+            nblettre++;
             eeprom_write(start+o, 0);
             eeprom_write(start+o+1, 0);
             o=o+2;
@@ -158,6 +161,8 @@ void addSentence(char* stc) {
 
         lastVal= value;
     }
+    eeprom_write(2, eeprom_read(2)-nblettre*2); // ajout *2
+    eeprom_write((7+2*(phrase-1))+2, nblettre);
 
     UART_Write_Text("New phrase saved\n");
 
